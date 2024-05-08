@@ -16,7 +16,6 @@ import goldenindia.ServiceStaff.PageObjects.OrderPage;
 import goldenindia.ServiceStaff.PageObjects.PaymentPage;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,13 +26,6 @@ public class servicestaffpanel extends servicestaffbase {
 	public OrderPage orPage;
 	public PaymentPage payPage;
 	SoftAssert softAssert = new SoftAssert();
-
-	public servicestaffpanel(Scenario scenario) {
-	}
-
-	public servicestaffpanel() {
-
-	}
 
 	@Given("I launch the service staff application")
 	public void i_launch_the_service_staff_application() throws IOException {
@@ -221,7 +213,7 @@ public class servicestaffpanel extends servicestaffbase {
 		try {
 			TakesScreenshot ts = (TakesScreenshot) driver;
 			File srcfile = ts.getScreenshotAs(OutputType.FILE);
-			File destDir = new File(System.getProperty("user.dir") + "//servicestaffpanelscreenshots");
+			File destDir = new File(System.getProperty("user.dir") + "//servicestaffscreenshots");
 
 			// Create directory if it doesn't exist
 			if (!destDir.exists()) {

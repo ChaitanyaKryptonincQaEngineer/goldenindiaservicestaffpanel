@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-05-07T11:37:21 IST" name="Default suite" finished-at="2024-05-07T11:37:55 IST" duration-ms="33373">
+  <suite started-at="2024-05-08T13:01:54 IST" name="Default suite" finished-at="2024-05-08T13:02:32 IST" duration-ms="37701">
     <groups>
       <group name="cucumber">
-        <method signature="AbstractTestNGCucumberTests.runScenario(io.cucumber.testng.PickleWrapper,io.cucumber.testng.FeatureWrapper)[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@23348b5d]" name="runScenario" class="io.cucumber.testng.AbstractTestNGCucumberTests"/>
+        <method signature="AbstractTestNGCucumberTests.runScenario(io.cucumber.testng.PickleWrapper,io.cucumber.testng.FeatureWrapper)[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@6302bbb1]" name="runScenario" class="io.cucumber.testng.AbstractTestNGCucumberTests"/>
       </group> <!-- cucumber -->
     </groups>
-    <test started-at="2024-05-07T11:37:21 IST" name="Default test" finished-at="2024-05-07T11:37:55 IST" duration-ms="33373">
+    <test started-at="2024-05-08T13:01:54 IST" name="Default test" finished-at="2024-05-08T13:02:32 IST" duration-ms="37701">
       <class name="goldenindia.ServiceStaff.TestRunners.servicestafftestrunner">
-        <test-method is-config="true" signature="setUpClass(org.testng.ITestContext)[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@23348b5d]" started-at="2024-05-07T11:37:21 IST" name="setUpClass" finished-at="2024-05-07T11:37:22 IST" duration-ms="877" status="PASS">
+        <test-method is-config="true" signature="setUpClass(org.testng.ITestContext)[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@6302bbb1]" started-at="2024-05-08T13:01:54 IST" name="setUpClass" finished-at="2024-05-08T13:01:55 IST" duration-ms="996" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[org.testng.TestRunner@26b3c9a2]]>
+                <![CDATA[org.testng.TestRunner@a323a5b]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUpClass -->
-        <test-method signature="runScenario(io.cucumber.testng.PickleWrapper,io.cucumber.testng.FeatureWrapper)[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@23348b5d]" started-at="2024-05-07T11:37:22 IST" name="runScenario" description="Runs Cucumber Scenarios" data-provider="scenarios" finished-at="2024-05-07T11:37:55 IST" duration-ms="32362" status="FAIL">
+        <test-method signature="runScenario(io.cucumber.testng.PickleWrapper,io.cucumber.testng.FeatureWrapper)[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@6302bbb1]" started-at="2024-05-08T13:01:55 IST" name="runScenario" description="Runs Cucumber Scenarios" data-provider="scenarios" finished-at="2024-05-08T13:02:32 IST" duration-ms="36525" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -34,21 +34,10 @@
               </value>
             </param>
           </params>
-          <exception class="io.cucumber.java.PendingException">
-            <message>
-              <![CDATA[TODO: implement me]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[io.cucumber.java.PendingException: TODO: implement me
-at goldenindia.ServiceStaff.StepDefinitions.servicestaffpanel.i_edit_a_product(servicestaffpanel.java:177)
-at ✽.I edit a product(file:///C:/Users/Admin/GoldenIndia/ServiceStaffPanel/src/test/java/goldenindia/ServiceStaff/Features/servicestaffpanel.feature:28)
-]]>
-            </full-stacktrace>
-          </exception> <!-- io.cucumber.java.PendingException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- runScenario -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@23348b5d]" started-at="2024-05-07T11:37:55 IST" name="tearDownClass" finished-at="2024-05-07T11:37:55 IST" duration-ms="39" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:goldenindia.ServiceStaff.TestRunners.servicestafftestrunner@6302bbb1]" started-at="2024-05-08T13:02:32 IST" name="tearDownClass" finished-at="2024-05-08T13:02:32 IST" duration-ms="125" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
