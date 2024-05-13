@@ -11,34 +11,33 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
-import goldenindia.ServiceStaff.Base.ServiceStaffBase;
+import goldenindia.ServiceStaff.Base.servicestaffbase;
 import goldenindia.ServiceStaff.PageObjects.OrderPage;
 import goldenindia.ServiceStaff.PageObjects.PaymentPage;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class servicestaffpanel extends ServiceStaffBase {
-	public PaymentPage payPage;
-	public OrderPage orderPage;
+public class servicestaffpanel extends servicestaffbase {
 
+	public OrderPage orPage;
+	public PaymentPage payPage;
 	SoftAssert softAssert = new SoftAssert();
 
 	@Given("I launch the service staff application")
 	public void i_launch_the_service_staff_application() throws IOException {
-		loginPage = launchApplication();
+		lpage = launchApplication();
 	}
 
 	@And("^I am logged in to the service staff panel with (.*) and (.*)$")
 	public void i_am_logged_in_to_the_service_staff_panel_with_and(String staffID, String pinCode) {
-		if (loginPage != null) {
+		if (lpage != null) {
 			System.out.println("Staff ID: " + staffID);
 			System.out.println("PIN Code: " + pinCode);
-			loginPage.loggingtoTheServicestaffPanel(staffID, pinCode);
+			lpage.loggingtoTheServicestaffPanel(staffID, pinCode);
 		} else {
 			System.out.println("Login Page object is null. Make sure it is initialized.");
 		}
@@ -46,14 +45,14 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 	@Then("I clock in to the service staff panel")
 	public void i_clocked_in_to_the_service_staff_panel() {
-		orderPage = loginPage.clickOnClockInButton();
+		orPage = lpage.clickOnClockInButton();
 
 	}
 
 	@Then("^I have selected a table (.*) to serve$")
 	public void i_have_selected_a_table_to_serve(String string) throws InterruptedException {
 
-		List<WebElement> tables = orderPage.getTableNumbers();
+		List<WebElement> tables = orPage.getTableNumbers();
 
 		for (WebElement webElement : tables) {
 			System.out.println(webElement.getText());
@@ -64,7 +63,7 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 		tables.stream()
 				// Check if the desired table number exists
-				.filter(table -> table.getText().trim().contains(string))
+				.filter(table -> table.getText().contains(string))
 				// If the table number is found, perform any necessary actions
 				.findFirst().ifPresentOrElse(table -> {
 					// Table found, do nothing
@@ -80,7 +79,7 @@ public class servicestaffpanel extends ServiceStaffBase {
 	public void i_add_items_to_the_course() {
 
 		try {
-			orderPage.addItemsToCart();
+			orPage.addItemsToCart();
 			;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -91,7 +90,7 @@ public class servicestaffpanel extends ServiceStaffBase {
 	@When("I send the order")
 	public void i_send_the_order() {
 		try {
-			orderPage.clickOnSentItemsButton();
+			orPage.clickOnSentItemsButton();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,12 +99,12 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 	@Then("the items should be sent successfully")
 	public void the_items_should_be_sent_successfully() {
-		Assert.assertEquals(orderPage.getSuccessMessageAfterSendingItems().getText(), "Order sent to kitchen.");
+		Assert.assertEquals(orPage.getSuccessMessageAfterSendingItems().getText(), "Order sent to kitchen.");
 	}
 
 	@Then("I proceed to payment")
 	public void i_proceed_to_payment() {
-		payPage = orderPage.clickOnPayButton();
+		payPage = orPage.clickOnPayButton();
 
 	}
 
@@ -134,47 +133,48 @@ public class servicestaffpanel extends ServiceStaffBase {
 	@When("I add courses")
 	public void i_add_courses() {
 		System.out.println("Adding the courses");
-		orderPage.addingCourse();
+		orPage.addingCourse();
 	}
 
 	@When("I add products to the courses")
 	public void i_add_products_to_the_courses() throws InterruptedException {
 		System.out.println("Adding the products");
-		orderPage.addingTheProductsToCourse();
+		orPage.addingTheProductsToCourse();
 	}
 
 	@Then("I sent the items to the kitchen.")
 	public void i_sent_the_items_to_the_kitchen() throws InterruptedException {
-		orderPage.clickOnSentItemsButton();
+		orPage.clickOnSentItemsButton();
 	}
 
 	@When("I fire the courses")
 	public void i_fire_the_courses() throws InterruptedException {
-		orderPage.firingCourse();
+		orPage.firingCourse();
 		System.out.println("Firing the courses");
 	}
 
 	@Then("I should receive an error message")
 	public void i_should_receive_an_error_message() throws InterruptedException {
-		String message = orderPage.gettingFireCourseMessage();
-		Assert.assertEquals(message,
-				"Course " + orderPage.gettingFireCourseSequence() + " has been fired successfully");
+		String message = orPage.gettingFireCourseMessage();
+		Assert.assertEquals(message, "Course " + orPage.gettingFireCourseSequence() + " has been fired successfully");
 		System.out.println("You are receivng an error message");
 	}
 
 	@When("I edit a product")
 	public void i_edit_a_product() {
 
+		
 	}
 
 	@And("I choose to transfer to another course")
 	public void i_choose_to_transfer_to_another_course() {
-
+		
 	}
 
 	@And("I check whether product transfer to the another course or not")
 	public void i_check_whether_product_transfer_to_the_another_course_or_not() {
 
+		
 	}
 
 	@When("I add courses to the cart")
@@ -192,38 +192,14 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 	}
 
-	@Given("^I edit the course (.*)$")
-	public void i_edit_the_course(String courseName) throws InterruptedException {
-		List<WebElement> courses = orderPage.gettingCoursesNames();
-		List<WebElement> courseEditButtons = orderPage.clickingOntheEditButton();
-
-		boolean courseFound = false;
-
-		for (int course = 0; course < courses.size(); course++) {
-			String courseText = courses.get(course).getText().trim(); // Trim to remove leading/trailing spaces
-			if (courseText.equals(courseName)) {
-				System.out.println("Course names match: " + courseName);
-				courses.get(course).click();
-				Thread.sleep(1000);
-				courseEditButtons.get(course).click();
-				courseFound = true;
-				break;
-			}
-		}
-
-		if (!courseFound) {
-			System.out.println("Course not found: " + courseName);
-			// Click on the first course
-			courses.get(0).click();
-			Thread.sleep(1000);
-			courseEditButtons.get(0).click();
-		}
+	@Given("I edit the courses")
+	public void i_edit_the_courses() {
 
 	}
 
 	@Then("I clear all items")
 	public void i_clear_all_items() {
-		orderPage.clearingTheItemsInCourse();
+
 	}
 
 	@Then("I ensure all products are removed")
@@ -232,23 +208,19 @@ public class servicestaffpanel extends ServiceStaffBase {
 	}
 
 	@After
-	public void tree_Down(Scenario scenario) throws InterruptedException, IOException {
+	public void tree_Down() throws InterruptedException, IOException {
 
-		Thread.sleep(2000);
 		try {
 			TakesScreenshot ts = (TakesScreenshot) driver;
 			File srcfile = ts.getScreenshotAs(OutputType.FILE);
 			File destDir = new File(System.getProperty("user.dir") + "//servicestaffscreenshots");
-			String featureName = scenario.getName();
 
 			// Create directory if it doesn't exist
 			if (!destDir.exists()) {
 				destDir.mkdir();
 			}
-			File destFile = new File(destDir, featureName + ".png");
-			if (destFile.exists()) {
-				destFile.delete();
-			}
+
+			File destFile = new File(destDir, "screenshot.png");
 			FileUtils.copyFile(srcfile, destFile);
 			driver.quit();
 		} catch (Exception e) {
@@ -258,18 +230,8 @@ public class servicestaffpanel extends ServiceStaffBase {
 	}
 
 	@Before
-	public void deletingScenarioFiles(Scenario scenario) {
+	public void deletingScenarioFiles() {
 
-		File reportsFolder = new File(System.getProperty("user.dir") + "//servicestaffscreenshots");
-		if (reportsFolder.exists() && reportsFolder.isDirectory()) {
-			for (File file : reportsFolder.listFiles()) {
-				if (!file.getName().equals(scenario.getName()) && file.getName().endsWith(".png")
-						|| file.getName().endsWith(".png")) {
-					String testName = file.getName().replaceFirst("[.][^.]+$", "");
-					deletePreviousFailureScreenshots(testName);
-				}
-			}
-		}
 	}
 
 }
