@@ -22,9 +22,12 @@ public class CommonUtilities {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.visibilityOf(ele));
 	}
-	
+
 	public void scrollToElementUsingJavascriptExecutor(WebElement ele) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		 js.executeScript("arguments[0].scrollIntoView(true);", ele);
+		js.executeScript("arguments[0].scrollIntoView(true);", ele);
 	}
+
+	
+
 }
