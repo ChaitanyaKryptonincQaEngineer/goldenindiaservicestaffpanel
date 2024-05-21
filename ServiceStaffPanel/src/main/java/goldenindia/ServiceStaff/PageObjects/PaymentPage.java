@@ -28,6 +28,7 @@ public class PaymentPage extends CommonUtilities {
 	private WebElement paymentCompletingButton;
 
 	public PaymentPage(WebDriver driver) {
+	
 		this.setDriver(driver);
 		PageFactory.initElements(driver, this);
 	}

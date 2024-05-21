@@ -1,21 +1,20 @@
 package goldenindia.ServiceStaff.StepDefinitions;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+
 import goldenindia.ServiceStaff.Base.ServiceStaffBase;
+import goldenindia.ServiceStaff.CommonUtilities.ExtentReportsManager;
 import goldenindia.ServiceStaff.PageObjects.OrderPage;
 import goldenindia.ServiceStaff.PageObjects.PaymentPage;
 import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -26,11 +25,13 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 	public OrderPage orderPage;
 	public PaymentPage payPage;
+	public ExtentReports extent;
 	SoftAssert softAssert = new SoftAssert();
 
 	@Given("I launch the service staff application")
 	public void i_launch_the_service_staff_application() throws IOException {
 		loginPage = launchApplication();
+
 	}
 
 	@And("^I am logged in to the service staff panel with (.*) and (.*)$")
@@ -182,13 +183,40 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 	}
 
-	@When("I transfer a course to another")
-	public void i_transfer_a_course_to_another() {
+	@When("^I transfer a course(.*) to another$")
+	public void i_transfer_a_course_to_another(String courseName) throws InterruptedException {
+
+		List<WebElement> courses = orderPage.gettingCoursesNames();
+		List<WebElement> courseEditButtons = orderPage.clickingOntheEditButton();
+
+		boolean courseFound = false;
+
+		for (int course = 0; course < courses.size(); course++) {
+			String courseText = courses.get(course).getText().trim(); // Trim to remove leading/trailing spaces
+			if (courseText.equals(courseName)) {
+				System.out.println("Course names match: " + courseName);
+				courses.get(course).click();
+				Thread.sleep(1000);
+				courseEditButtons.get(course).click();
+				courseFound = true;
+				break;
+			}
+		}
+
+		if (!courseFound) {
+			System.out.println("Course not found: " + courseName);
+			// Click on the first course
+			courses.get(0).click();
+			Thread.sleep(1000);
+			courseEditButtons.get(0).click();
+		}
 
 	}
 
 	@Then("I ensure all products are transferred")
-	public void i_ensure_all_products_are_transferred() {
+	public void i_ensure_all_products_are_transferred() throws InterruptedException {
+
+		orderPage.transferTheCourseToAnotherCourse();
 
 	}
 
@@ -221,6 +249,11 @@ public class servicestaffpanel extends ServiceStaffBase {
 
 	}
 
+	@When("^I click on the edit option to reprint the course (.*) details.$")
+	public void i_click_on_the_edit_option_to_reprint_the_course_details(String courseName) {
+		
+	}
+
 	@Then("I clear all items")
 	public void i_clear_all_items() {
 		orderPage.clearingTheItemsInCourse();
@@ -232,35 +265,38 @@ public class servicestaffpanel extends ServiceStaffBase {
 	}
 
 	@After
-	public void tree_Down(Scenario scenario) throws InterruptedException, IOException {
+	public void tearDown(Scenario scenario) throws InterruptedException, IOException {
+		if (extent == null) {
+			extent = ExtentReportsManager.configReports();
+		}
 
-		Thread.sleep(1000);
-		try {
-			TakesScreenshot ts = (TakesScreenshot) driver;
-			File srcfile = ts.getScreenshotAs(OutputType.FILE);
-			File destDir = new File(System.getProperty("user.dir") + "//servicestaffscreenshots");
+		ExtentTest test = testThread.get();
+		if (test == null) {
+			test = extent.createTest(scenario.getName());
+			testThread.set(test);
+		}
 
-			// Create directory if it doesn't exist
-			if (!destDir.exists()) {
-				destDir.mkdir();
-			}
+		if (scenario.isFailed()) {
+			System.out.println("Test Scenario is Failed !!! " + scenario.getName());
+			captureScreenshot(scenario);
+			test.fail("Test failed");
+		} else {
+			System.out.println("Test Scenario is Passed !!! " + scenario.getName());
+			captureScreenshot(scenario);
+			test.pass("Test passed");
+		}
 
-			File destFile = new File(destDir, scenario.getName() + ".png");
-			if (destFile.exists()) {
-				destFile.delete();
-			}
+		driver.quit();
 
-			FileUtils.copyFile(srcfile, destFile);
-			driver.quit();
-		} catch (Exception e) {
-			e.printStackTrace();
+		testThread.remove();
+		synchronized (test) {
+			extent.flush();
 		}
 
 	}
-
-	@Before
-	public void deletingScenarioFiles() {
-
-	}
-
+//
+//	@Before
+//	public void setUp(Scenario scenario) {
+//		ExtentReportsManager.test = ExtentReportsManager.configReports().createTest(scenario.getName());
+//	}
 }

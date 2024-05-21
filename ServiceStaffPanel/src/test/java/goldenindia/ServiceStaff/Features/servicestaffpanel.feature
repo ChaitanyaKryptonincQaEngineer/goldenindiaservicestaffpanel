@@ -28,6 +28,7 @@ Feature: Service Staff Panel: Logging Out After Completing Orders
     When I edit a product
     And I choose to transfer to another course
     And I check whether product transfer to the another course or not
+
     Examples: 
       | Staff ID | PIN Code | Table Number |
       |     2229 |     1234 | T5           |
@@ -37,39 +38,49 @@ Feature: Service Staff Panel: Logging Out After Completing Orders
     And I am logged in to the service staff panel with Staff ID "<Staff ID>" and PIN Code "<PIN Code>"
     Then I clock in to the service staff panel
     And I have selected a table <Table Number> to serve
-    When I add courses to the cart
+    When I add courses
     And I add products to the courses
-    And I transfer a course to another
+    And I transfer a course <Course> to another
     Then I ensure all products are transferred
 
     Examples: 
-      | Staff ID | PIN Code | Table Number |
-      |     2229 |     1234 | T5           |
+      | Staff ID | PIN Code | Table Number | Course   |
+      |     2229 |     1234 | T5           | Course 1 |
 
   @Regression @ClearItemsOfCourse @Course
   Scenario Outline: Clearing Items in Courses
     And I am logged in to the service staff panel with Staff ID "<Staff ID>" and PIN Code "<PIN Code>"
     Then I clock in to the service staff panel
     And I have selected a table <Table Number> to serve
-    When I add courses to the cart
+    When I add courses
     And I add products to the courses
-    And I edit the courses
+    And I edit the course <Course>
     Then I clear all items
     Then I ensure all products are removed
 
     Examples: 
-      | Staff ID | PIN Code | Table Number |
-      |     2229 |     1234 | T5           |
+      | Staff ID | PIN Code | Table Number | Course   |
+      |     2229 |     1234 | T5           | Course 1 |
 
+  @Regression @ReprintingCourse @Course
   Scenario Outline: Reprinting the course.
-    And I am
+    And I am logged in to the service staff panel with Staff ID "<Staff ID>" and PIN Code "<PIN Code>"
+    Then I clock in to the service staff panel
+    And I have selected a table <Table Number> to serve
+    When I add courses
+    And I add products to the courses
+    Then I sent the items to the kitchen.
+    And I click on the edit option to reprint the course <Course> details.
 
-  @Regression
+    Examples: 
+      | Staff ID | PIN Code | Table Number | Course   |
+      |     2229 |     1234 | T5           | Course 1 |
+
   Scenario Outline: Staff Logs Out After Completing Orders
     And I am logged in to the service staff panel with Staff ID "<Staff ID>" and PIN Code "<PIN Code>"
     Then I clock in to the service staff panel
     And I have selected a table <Table Number> to serve
-    When I add items to the course
+    When I add courses
     And I send the order
     Then the items should be sent successfully
     And I proceed to payment
